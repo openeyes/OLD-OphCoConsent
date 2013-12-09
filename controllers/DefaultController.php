@@ -29,7 +29,10 @@ class DefaultController extends BaseEventTypeController {
 					->join("session s","b.session_id = s.id")
 					->join("element_operation eo","b.element_operation_id = eo.id")
 					->join("event e","eo.event_id = e.id")
-					->where("e.episode_id = ?",array($episode->id))
+					->where("e.episode_id = :episodeid and b.deleted = :notdeleted and s.deleted = :notdeleted and eo.deleted = :notdeleted and e.deleted = :notdeleted",array(
+						':episodeid' => $episode->id,
+						':notdeleted' => 0,
+					))
 					->queryAll() as $row) {
 
 					$row['procedures'] = array();
